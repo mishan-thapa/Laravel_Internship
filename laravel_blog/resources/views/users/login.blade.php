@@ -7,8 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   </head>
   <body>
-    <h1>First Laravel Projecct</h1>
-    <p>you need to login to access the create, update and delete operation.</p>
         <div class="container">
             <div class="row">
                 <div class="col-md-4 offset-md-4">
@@ -41,9 +39,6 @@
                                     @endif
                                 </div>
                                 <div class="row">
-                                    <div class="col-8 text-left">
-                                        <a href="#" class="btn btn-link">Forgot Password</a>
-                                    </div>
                                     <div class="col-4 text-right">
                                         <input type="submit" class="btn btn-primary" value=" Login " />
                                     </div>

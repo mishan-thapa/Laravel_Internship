@@ -17,18 +17,18 @@
       <div class="row">
         <div class="col-12">
           <div class="row">
-            <div class="col-2">
-              <img class="img-fluid" style="max-width:50%;" src="{{ asset('images/'.$post->image)}}" alt="">
+            <div class="col-3">
+              <img class="img-fluid" style="max-width:90%;" src="{{ asset('images/'.$post->image)}}" alt="">
             </div>
-            <div class="col-10">
+            <div class="col-6">
               <h4>{{$post->title}}</h4>
+              <p>{{$post->description}}</p>
               <h6>-{{$post->username}}</h6>
             </div>
           </div>
-          <p>{{$post->description}}</p>
-          <hr>
         </div>
       </div>
+      <br>
     @endforeach
   @else
     <p>No Posts found</p>

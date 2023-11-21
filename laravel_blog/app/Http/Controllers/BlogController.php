@@ -42,4 +42,37 @@ public function store(Request $request) {
     Post::create($postData);
     return redirect()->route('blogs.index')->with('success', 'Post created successfully.');
   }
+
+  public function show(){
+    $user = Auth::user();
+    $username = $user->name;
+    $posts = Post::where('username',$username)->get();
+    return view('blogs.show',['posts'=>$posts]);
+  }
+  public function edit(string $id){
+    $post = Post::find($id);
+    //echo($post);
+    return view('blogs.edit',['post'=>$post]);
+  }
+
+  public function update(Request $request,string $id){
+    $post = Post::find($id);
+    $request->validate([
+      'title' => 'required',
+      'description' => 'required',
+      'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+    $updateData = [
+      'title' => $request->title,
+      'description' => $request->description,
+    ];
+    if($request->image){
+      $file_name = time() . '.' . request()->image->getClientOriginalExtension();
+      request()->image->move(public_path('images'), $file_name);
+      $updateData['image']= $file_name;
+    }
+    $post->update($updateData);
+    return redirect(route('blogs.index'));
+
+  }
 }
