@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
-// Show all posts
-public function index() {
-    $posts = Post::orderBy('created_at', 'desc')->get();
-    return view('blogs.index', ['posts' => $posts]);
-  }
-      
-  // Create post
-  public function create() {
-    return view('blogs.create');
-  }
+    // Show all posts
+    public function index() {
+        $posts = Post::orderBy('created_at', 'desc')->paginate(1);//->get();
+        return view('blogs.index', ['posts' => $posts]);
+    }
+
+    // Create post
+    public function create() {
+        return view('blogs.create');
+    }
 
 // Store post
 public function store(Request $request) {

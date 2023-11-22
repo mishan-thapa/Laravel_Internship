@@ -4,7 +4,7 @@
   <div class="titlebar">
     <h1>Post list</h1>
   </div>
-    
+
   <hr>
   <!-- Message if a post is posted successfully -->
   @if ($message = Session::get('success'))
@@ -33,5 +33,6 @@
   @else
     <p>No Posts found</p>
   @endif
+{{$posts->links()}}
 </div>
 @endsection
