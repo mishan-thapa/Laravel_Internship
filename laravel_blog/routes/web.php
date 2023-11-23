@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApprovedPostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,5 +29,11 @@ Route::post('/blog/logout',[UserController::class,'logout'])->name('users.logout
 
 Route::get('/blog/admin',[AdminController::class,'index'])->name('admin.index');
 Route::get('/blog/admin/login',[AdminController::class,'login'])->name('admin.login');
-Route::post('/blog/admin/login',[AdminController::class,'validateLogin'])->name('admin.validateLogin');
+Route::post('/blog/admin/login',[AdminController::class,'authenticateLogin'])->name('admin.authenticateLogin');
 Route::get('/blog/admin/register',[AdminController::class,'register'])->name('admin.register');
+Route::post('/blog/admin/register',[AdminController::class,'store'])->name('admin.store');
+Route::get('/blog/admin/dashboard',[AdminController::class,'dashboard'])->name('admin.dashboard')->middleware(['admin.auth']);
+Route::post('/blog/admin/logout',[AdminController::class,'logout'])->name('admin.logout');
+
+
+Route::get('/blog/admin/approve-post',[ApprovedPostController::class,'index'])->name('approve-post.index');

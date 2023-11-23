@@ -12,18 +12,18 @@
     <p>{{ $message }}</p>
   </div>
   @endif
-         @if (count($approved_posts) > 0)
-    @foreach ($approved_posts as $approved_post)
+         @if (count($posts) > 0)
+    @foreach ($posts as $post)
       <div class="row">
         <div class="col-12">
           <div class="row">
             <div class="col-3">
-              <img class="img-fluid" style="max-width:90%;" src="{{ asset('images/'.$approved_post->post->image)}}" alt="">
+              <img class="img-fluid" style="max-width:90%;" src="{{ asset('images/'.$post->post->image)}}" alt="">
             </div>
             <div class="col-6">
-              <h4>{{$approved_post->post->title}}</h4>
-              <p>{{$approved_post->post->description}}</p>
-              <h6>-{{$approved_post->post->username}}</h6>
+              <h4>{{$post->post->title}}</h4>
+              <p>{{$post->post->description}}</p>
+              <h6>-{{$post->post->username}}</h6>
             </div>
           </div>
         </div>

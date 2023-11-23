@@ -19,7 +19,7 @@
                             <p class="text-danger">{{ Session::get('error') }}</p>
                         @endif
 
-                        <form action="{{route('users.store')}}" method="post">
+                        <form action="{{route('admin.store')}}" method="post">
                             @csrf
                             @method('post')
                             <div class="form-group">

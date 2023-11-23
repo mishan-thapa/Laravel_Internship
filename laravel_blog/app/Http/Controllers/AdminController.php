@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -14,24 +16,52 @@ class AdminController extends Controller
         return view('admin.login');
     }
 
-    public function validateLogin(){
+    public function authenticateLogin(Request $request){
         //form validation
         $request->validate([
-            'name'=>'required',
-            'email'=>'required',
-            'password'=>'required',
+            "email" => "required",
+            "password" => "required",
         ]);
         //user authentication
-        if(Auth::attempt($request->only('email','password'))){
-            $request->session()->regenerate();
-            $user = Auth::user();
-            // Redirect the authenticated user to view their posts
-            return redirect()->route('blogs.index');
+        if (Auth::guard('admin')->attempt($request->only("email", "password"))) {
+            return redirect()->route("admin.dashboard");
         }
 
-        return redirect('users.index')->withError('Login details are not valid');
+        return redirect("admin.login")->withError(
+            "Login details are not valid"
+        );
     }
     public function register(){
         return view('admin.register');
     }
+
+    //to register the admin credentials
+    public function store(Request $request){
+        $data = $request->validate([
+            "name" => "required",
+            "email" => "required|unique:admins",
+            "password" => "required|confirmed", //password and confirm_password must match
+        ]);
+        //create a new record of user in database
+        Admin::create([
+            "name" => $request->name,
+            "email" => $request->email,
+            //"password" => $request->password,
+            'password' => \Hash::make($request->password),
+        ]);
+
+        return redirect(route("admin.index"));
+    }
+
+    public function logout(){
+        \Session::flush();
+        \Auth::guard('admin')->logout();
+        //$request->session()->invalidate();
+        return redirect(route("admin.index"));
+    }
+
+    public function dashboard(){
+        return view('admin.dashboard');
+    }
+
 }
