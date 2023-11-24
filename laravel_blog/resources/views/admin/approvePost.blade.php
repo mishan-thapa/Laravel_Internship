@@ -28,7 +28,7 @@
                               <p>{{$post->description}}</p>
                           </div>
                           <div class="col-2">
-                              <form method="get" action="{{ route('blogs.edit',['id' => $post->id]) }}">
+                              <form method="post" action="{{ route('approve-post.update',['id' => $post->id]) }}">
                                   @csrf
                                   <input type="submit" value="Approve Post" />
                               </form>

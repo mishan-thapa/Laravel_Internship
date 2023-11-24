@@ -21,7 +21,7 @@
                                 <p class="text-success">{{ Session::get('success') }}</p>
                             @endif
 
-                            <form action="{{route('admin.login')}}" method="post">
+                            <form action="{{route('admin.authenticateLogin')}}" method="post">
                                 @csrf
                                 @method('post')
                                 <div class="form-group">

@@ -18,9 +18,18 @@
                             <p>{{$post->description}}</p>
                         </div>
                         <div class="col-2">
+                            <h4>status: {{$post->status}}</h4>
+                        </div>
+                        <div class="col-1">
                             <form method="get" action="{{ route('blogs.edit',['id' => $post->id]) }}">
-                                @csrf 
+                                @csrf
                                 <input type="submit" value="Edit Post" />
+                            </form>
+
+                            <form method="post" action="{{ route('blogs.delete', ['id' => $post->id]) }}">
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="Delete" />
                             </form>
                         </div>
                     </div>

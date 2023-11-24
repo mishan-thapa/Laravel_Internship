@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,7 +10,11 @@ use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
     public function index(){
-        return view('admin.index');
+        //$adminUser = Auth::guard('admin')->user();
+        //$adminName = $adminUser->name;
+        //return view('admin.index',['adminName'=>$adminName]);
+        $posts = Post::orderBy('created_at', 'desc')->get();
+        return view('admin.index',['posts'=>$posts]);
     }
 
     public function login(){
@@ -24,44 +29,36 @@ class AdminController extends Controller
         ]);
         //user authentication
         if (Auth::guard('admin')->attempt($request->only("email", "password"))) {
-            return redirect()->route("admin.dashboard");
+            return redirect()->route("admin.index");
         }
 
-        return redirect("admin.login")->withError(
+        return redirect(route("admin.login"))->withError(
             "Login details are not valid"
         );
     }
-    public function register(){
-        return view('admin.register');
+
+    public function show(){
+        $posts = Post::where("status",'=','unapproved')->get();
+        return view("admin.show", ["posts" => $posts]);
     }
 
-    //to register the admin credentials
-    public function store(Request $request){
-        $data = $request->validate([
-            "name" => "required",
-            "email" => "required|unique:admins",
-            "password" => "required|confirmed", //password and confirm_password must match
-        ]);
-        //create a new record of user in database
-        Admin::create([
-            "name" => $request->name,
-            "email" => $request->email,
-            //"password" => $request->password,
-            'password' => \Hash::make($request->password),
-        ]);
+    public function update(){
+        $post = Post::where('id','=',$id)
+                    ->update(['status'=>'approved']);
+        return redirect()->back();
+    }
 
-        return redirect(route("admin.index"));
+    public function delete(string $id){
+        $post = Post::where('id','=',$id);
+        $post->delete();
+        return redirect(route('admin.index'));
     }
 
     public function logout(){
         \Session::flush();
         \Auth::guard('admin')->logout();
         //$request->session()->invalidate();
-        return redirect(route("admin.index"));
-    }
-
-    public function dashboard(){
-        return view('admin.dashboard');
+        return redirect(route("admin.login"));
     }
 
 }

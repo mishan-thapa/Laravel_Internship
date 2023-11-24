@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->longText('description')->nullable();
             $table->string('image')->nullable();
-            $table->string('username')->nullable();
+            $table->string('user_id');
+            $table->string('status')->default('unapproved');
             $table->timestamps();
         });
     }

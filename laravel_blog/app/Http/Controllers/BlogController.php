@@ -6,7 +6,6 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\ApiResponser;
-use App\Models\ApprovedPost;
 
 class BlogController extends Controller
 {
@@ -14,11 +13,12 @@ class BlogController extends Controller
     // Show all posts
     public function index()
     {
-        //$posts = Post::orderBy('created_at', 'desc')->get();//->paginate(1);//->get();
+        $posts = Post::where('status', '=', 'approved')
+                    ->orderBy('created_at', 'desc')
+                    ->get();//->paginate(1);//->get();
         //$response = $this->successResponse($posts);
         //return view('index',['responseData'=>$response]);
-        $approved_posts = ApprovedPost::all();
-        return view("blogs.index", ["approved_posts" => $approved_posts]);
+        return view("blogs.index", ["posts" => $posts]);
     }
 
     // Create post
@@ -38,7 +38,7 @@ class BlogController extends Controller
         ]);
 
         $user = Auth::user();
-        $username = $user->name;
+        $user_id = $user->id;
         $file_name =
             time() . "." . request()->image->getClientOriginalExtension();
         request()->image->move(public_path("images"), $file_name);
@@ -47,7 +47,7 @@ class BlogController extends Controller
             "title" => $request->title,
             "description" => $request->description,
             "image" => $file_name,
-            "username" => $username,
+            "user_id" => $user->id,
         ];
         Post::create($postData);
         return redirect()
@@ -58,8 +58,10 @@ class BlogController extends Controller
     public function show()
     {
         $user = Auth::user();
-        $username = $user->name;
-        $posts = Post::where("username", $username)->get();
+        $user_id = $user->id;
+        $posts = Post::where("user_id", $user_id)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
         return view("blogs.show", ["posts" => $posts]);
     }
     public function edit(string $id)
@@ -89,5 +91,11 @@ class BlogController extends Controller
         }
         $post->update($updateData);
         return redirect(route("blogs.index"));
+    }
+
+    public function delete(string $id){
+        $post = Post::where('id','=',$id);
+        $post->delete();
+        return redirect(route('blogs.index'));
     }
 }
