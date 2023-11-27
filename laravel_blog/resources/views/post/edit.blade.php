@@ -3,7 +3,7 @@
 <div class="container">
   <h1>Add Post</h1>
   <section class="mt-3">
-    <form method="post" action="{{ route('blogs.update',['id'=>$post->id]) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('post.update',['id'=>$post->id]) }}" enctype="multipart/form-data">
       @csrf
       <!-- Error message when data is not inputted -->
       @if ($errors->any())
@@ -27,6 +27,6 @@
       <button class="btn btn-secondary m-3">Save</button>
     </form>
   </section>
-    
+
 </div>
 @endsection

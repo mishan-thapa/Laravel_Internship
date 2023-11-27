@@ -36,6 +36,7 @@
       </div>
       <br>
     @endforeach
+    {{ $posts->links() }}
   @else
     <p>No Posts found</p>
   @endif

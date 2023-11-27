@@ -13,11 +13,14 @@
 <!-- Navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{{route('blogs.index')}}">Admin Home</a>
+      <a class="navbar-brand" href="{{route('admin.index')}}">Admin Home</a>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('approve-post.index') }}">Approve Post</a>
+            <a class="nav-link" href="{{ route('admin.show') }}">unapprovedPosts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.userList') }}">UserList</a>
           </li>
           <li>
             <form method="post" action="{{ route('admin.logout') }}">
@@ -31,7 +34,40 @@
   </nav>
 
 <!-- Body -->
-<h2>hello {{$adminName}}</h2>
+<div class="container">
+    <div class="titlebar">
+      <h1>User list</h1>
+    </div>
+      @if (count($users) > 0)
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">name</th>
+            <th scope="col">email</th>
+            <th scope="col">action</th>
+          </tr>
+        </thead>
+        @foreach ($users as $user)
+        <tbody>
+            <tr>
+              <td>{{$user->name}}</td>
+              <td>{{$user->email}}</td>
+              <td>
+                <form method="post" action="{{ route('admin.blog.delete', ['id' => $user->id]) }}">
+                    @csrf
+                    @method('delete')
+                    <input type="submit" value="Delete" />
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        @endforeach
+
+      </table>
+      @else
+          <p>No Users found</p>
+      @endif
+  </div>
 
 <!-- Footer -->
 <footer class="footer mt-auto py-3 bg-dark">

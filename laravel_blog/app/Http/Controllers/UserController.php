@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Controllers\PostController;
 
 class UserController extends Controller
 {
@@ -18,50 +21,35 @@ class UserController extends Controller
         return view("users.register");
     }
 
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        //form validation
-        $request->validate([
-            "name" => "required",
-            "email" => "required|unique:users",
-            "password" => "required|confirmed", //password and confirm_password must match
-        ]);
-
-        //create a new record of user in database
-        User::create([
-            "name" => $request->name,
-            "email" => $request->email,
-            "password" => $request->password,
-            //'password' => \Hash::make($request->password),
-        ]);
-
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+        User::create($validated);
         return redirect(route("users.index"));
     }
 
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
-        //form validation
-        $request->validate([
-            "email" => "required",
-            "password" => "required",
-        ]);
         //user authentication
         if (Auth::attempt($request->only("email", "password"))) {
-            //$request->session()->regenerate();
-            // Redirect the authenticated user to view their posts
-            return redirect()->route("blogs.index");
+            return redirect()->route("post.index");
         }
-
-        return redirect("users.index")->withError(
+        return redirect(route("users.index"))->withError(
             "Login details are not valid"
         );
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        \Session::flush();
-        \Auth::logout();
-        $request->session()->invalidate();
-        return redirect(route("blogs.index"));
+        Auth::logout();
+        return redirect(route("post.index"));
+    }
+
+    public function delete(string $id){
+        $user = User::where('id','=',$id);//->get();
+        $user->delete();
+        $this->logout();
+        return redirect()->back();
     }
 }

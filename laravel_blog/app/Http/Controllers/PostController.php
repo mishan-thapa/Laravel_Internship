@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Traits\ApiResponser;
+use App\Http\Requests\StorePostRequest;
 
-class BlogController extends Controller
+class PostController extends Controller
 {
     use ApiResponser;
     // Show all posts
@@ -15,28 +16,21 @@ class BlogController extends Controller
     {
         $posts = Post::where('status', '=', 'approved')
                     ->orderBy('created_at', 'desc')
-                    ->get();//->paginate(1);//->get();
+                    ->paginate(2);//->get();
         //$response = $this->successResponse($posts);
         //return view('index',['responseData'=>$response]);
-        return view("blogs.index", ["posts" => $posts]);
+        return view("post.index", ["posts" => $posts]);
     }
 
     // Create post
     public function create()
     {
-        return view("blogs.create");
+        return view("post.create");
     }
 
     // Store post
-    public function store(Request $request)
+    public function store(StorePostRequest $request) //Request $request
     {
-        // validations
-        $request->validate([
-            "title" => "required",
-            "description" => "required",
-            "image" => "required|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
-        ]);
-
         $user = Auth::user();
         $user_id = $user->id;
         $file_name =
@@ -51,7 +45,7 @@ class BlogController extends Controller
         ];
         Post::create($postData);
         return redirect()
-            ->route("blogs.index")
+            ->route("post.index")
             ->with("success", "Post created successfully.");
     }
 
@@ -62,23 +56,17 @@ class BlogController extends Controller
         $posts = Post::where("user_id", $user_id)
                     ->orderBy('created_at', 'desc')
                     ->get();
-        return view("blogs.show", ["posts" => $posts]);
+        return view("post.show", ["posts" => $posts]);
     }
     public function edit(string $id)
     {
         $post = Post::find($id);
-        //echo($post);
-        return view("blogs.edit", ["post" => $post]);
+        return view("post.edit", ["post" => $post]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(StorePostRequest $request, string $id)
     {
         $post = Post::find($id);
-        $request->validate([
-            "title" => "required",
-            "description" => "required",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
-        ]);
         $updateData = [
             "title" => $request->title,
             "description" => $request->description,
@@ -90,12 +78,13 @@ class BlogController extends Controller
             $updateData["image"] = $file_name;
         }
         $post->update($updateData);
-        return redirect(route("blogs.index"));
+        return redirect(route("post.index"));
     }
 
     public function delete(string $id){
-        $post = Post::where('id','=',$id);
+        $post = Post::where('id','=',$id);//->get();
         $post->delete();
-        return redirect(route('blogs.index'));
+        return redirect(route('post.index'));
     }
+
 }

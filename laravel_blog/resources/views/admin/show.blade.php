@@ -53,7 +53,7 @@
                                   @csrf
                                   <input type="submit" value="Approve Post" />
                               </form>
-                              <form method="post" action="{{ route('admin.delete', ['id' => $post->id]) }}">
+                              <form method="post" action="{{ route('admin.blog.delete', ['id' => $post->id]) }}">
                                 @csrf
                                 @method('delete')
                                 <input type="submit" value="Delete" />

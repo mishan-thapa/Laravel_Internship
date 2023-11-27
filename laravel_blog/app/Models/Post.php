@@ -13,6 +13,6 @@ class Post extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);//, 'foreign_key', 'other_key' ,'user_id','id'
+        return $this->belongsTo(User::class);//, 'foreign_key', 'other_key'|| ,'user_id','id'
     }
 }

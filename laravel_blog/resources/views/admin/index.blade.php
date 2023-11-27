@@ -17,7 +17,10 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.show') }}">unapprovedPosts</a>
+            <a class="nav-link" href="{{ route('admin.show') }}">UnapprovedPosts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.userList') }}">UserList</a>
           </li>
           <li>
             <form method="post" action="{{ route('admin.logout') }}">
@@ -33,24 +36,29 @@
 <!-- Body -->
 <div class="container">
     <div class="titlebar">
-      <h1>My Post list</h1>
+      <h1>Post list</h1>
     </div>
       @if (count($posts) > 0)
           @foreach ($posts as $post)
               <div class="row">
                   <div class="col-12">
                       <div class="row">
-                        <div class="col-3">
-                            <img class="img-fluid" style="max-width:90%;" src="{{ asset('images/'.$post->image)}}" alt="">
+                            <div class="col-3">
+                                <img class="img-fluid" style="max-width:90%;" src="{{ asset('images/'.$post->image)}}" alt="">
+                            </div>
+                            <div class="col-6">
+                                <h4>{{$post->title}}</h4>
+                                <p>{{$post->description}}</p>
+                            </div>
+                            <div class="col-2">
+                                <h4>status: {{$post->status}}</h4>
+                                <form method="post" action="{{ route('admin.blog.delete', ['id' => $post->id]) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <input type="submit" value="Delete" />
+                                </form>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            <h4>{{$post->title}}</h4>
-                            <p>{{$post->description}}</p>
-                        </div>
-                        <div class="col-2">
-                            <h4>status: {{$post->status}}</h4>
-                        </div>
-                      </div>
                   </div>
               </div>
               <br>
