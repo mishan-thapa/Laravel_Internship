@@ -19,6 +19,9 @@ Route::get('/blog/post',[PostController::class,'show'])->name('post.show')->midd
 Route::get('/blog/post/edit/{id}',[PostController::class,'edit'])->name('post.edit')->middleware(['auth']);
 Route::post('/blog/post/update/{id}',[PostController::class,'update'])->name('post.update');
 Route::delete('/blog/post/delete/{id}',[PostController::class,'delete'])->name('post.delete')->middleware(['auth']);
+Route::get('/blog/trash',[PostController::class,'trash'])->name('post.trash')->middleware(['auth']);
+Route::post('/blog/trash/restore/{id}',[PostController::class,'restore'])->name('post.restore')->middleware(['auth']);
+Route::delete('/blog/trash/delete/{id}',[PostController::class,'trashDelete'])->name('post.trashDelete')->middleware(['auth']);
 
 
 Route::get('/blog/user/login',[UserController::class,'index'])->name('users.index')->middleware(['user.guest']);

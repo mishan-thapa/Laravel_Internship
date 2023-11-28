@@ -84,7 +84,22 @@ class PostController extends Controller
     public function delete(string $id){
         $post = Post::where('id','=',$id);//->get();
         $post->delete();
-        return redirect(route('post.index'));
+        return redirect()->back();
+    }
+
+    public function trash(){
+        $user_id = Auth::user()->id;
+        $posts = Post::onlyTrashed()->where('user_id','=',$user_id)->get();
+        return view('post.trash',['posts'=>$posts]);
+    }
+
+    public function restore(string $id){
+        $post = Post::where('id','=',$id)->restore();
+        return redirect()->back();
+    }
+    public function trashDelete(string $id){
+        $post = Post::where('id','=',$id)->forceDelete();
+        return redirect()->back();
     }
 
 }

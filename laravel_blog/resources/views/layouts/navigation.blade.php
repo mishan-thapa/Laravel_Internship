@@ -15,6 +15,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ route('post.show') }}">My Posts</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('post.trash') }}">Trash</a>
+          </li>
           <li>
             <form method="post" action="{{ route('users.logout') }}">
               @csrf

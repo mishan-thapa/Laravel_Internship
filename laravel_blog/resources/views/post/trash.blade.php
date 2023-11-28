@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
   <div class="titlebar">
-    <h1>My Post list</h1>
+    <h1>Trash list</h1>
   </div>
 
     @if (count($posts) > 0)
@@ -17,19 +17,17 @@
                             <h4>{{$post->title}}</h4>
                             <p>{{$post->description}}</p>
                         </div>
-                        <div class="col-2">
-                            <h4>status: {{$post->status}}</h4>
+                        <div class="col-1">
+                            <form method="post" action="{{ route('post.restore',['id' => $post->id]) }}">
+                                @csrf
+                                <input type="submit" value="Restore" />
+                            </form>
                         </div>
                         <div class="col-1">
-                            <form method="get" action="{{ route('post.edit',['id' => $post->id]) }}">
-                                @csrf
-                                <input type="submit" value="Edit Post" />
-                            </form>
-
-                            <form method="post" action="{{ route('post.delete', ['id' => $post->id]) }}">
+                            <form method="post" action="{{ route('post.trashDelete', ['id' => $post->id]) }}">
                                 @csrf
                                 @method('delete')
-                                <input type="submit" value="Move To Trash" />
+                                <input type="submit" value="Delete Permanently" />
                             </form>
                         </div>
                     </div>
@@ -38,7 +36,7 @@
             <br>
         @endforeach
     @else
-        <p>No Posts found</p>
+        <p>Trash Empty</p>
     @endif
 </div>
 @endsection
