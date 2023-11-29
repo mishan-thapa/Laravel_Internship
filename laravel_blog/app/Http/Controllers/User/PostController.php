@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
@@ -14,9 +15,10 @@ class PostController extends Controller
     // Show all posts
     public function index()
     {
-        $posts = Post::where('status', '=', 'approved')
+        $user_id = Auth::user()->id;
+        $posts = Post::where('user_id', '=', $user_id)
                     ->orderBy('created_at', 'desc')
-                    ->paginate(2);//->get();
+                    ->paginate(5);//->get();
         //$response = $this->successResponse($posts);
         //return view('index',['responseData'=>$response]);
         return view("post.index", ["posts" => $posts]);
@@ -49,15 +51,6 @@ class PostController extends Controller
             ->with("success", "Post created successfully.");
     }
 
-    public function show()
-    {
-        $user = Auth::user();
-        $user_id = $user->id;
-        $posts = Post::where("user_id", $user_id)
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-        return view("post.show", ["posts" => $posts]);
-    }
     public function edit(string $id)
     {
         $post = Post::find($id);
@@ -84,21 +77,6 @@ class PostController extends Controller
     public function delete(string $id){
         $post = Post::where('id','=',$id);//->get();
         $post->delete();
-        return redirect()->back();
-    }
-
-    public function trash(){
-        $user_id = Auth::user()->id;
-        $posts = Post::onlyTrashed()->where('user_id','=',$user_id)->get();
-        return view('post.trash',['posts'=>$posts]);
-    }
-
-    public function restore(string $id){
-        $post = Post::where('id','=',$id)->restore();
-        return redirect()->back();
-    }
-    public function trashDelete(string $id){
-        $post = Post::where('id','=',$id)->forceDelete();
         return redirect()->back();
     }
 

@@ -18,13 +18,13 @@
                             <p>{{$post->description}}</p>
                         </div>
                         <div class="col-1">
-                            <form method="post" action="{{ route('post.restore',['id' => $post->id]) }}">
+                            <form method="post" action="{{ route('trash.update',['id' => $post->id]) }}">
                                 @csrf
                                 <input type="submit" value="Restore" />
                             </form>
                         </div>
                         <div class="col-1">
-                            <form method="post" action="{{ route('post.trashDelete', ['id' => $post->id]) }}">
+                            <form method="post" action="{{ route('trash.delete', ['id' => $post->id]) }}">
                                 @csrf
                                 @method('delete')
                                 <input type="submit" value="Delete Permanently" />

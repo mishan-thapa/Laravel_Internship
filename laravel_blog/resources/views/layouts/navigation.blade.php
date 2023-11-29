@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{{route('post.index')}}">Laravel Blog</a>
+      <a class="navbar-brand" href="{{route('blog.index')}}">Laravel Blog</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -13,10 +13,10 @@
             <a class="nav-link" href="{{ route('post.create') }}">Add Post</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('post.show') }}">My Posts</a>
+            <a class="nav-link" href="{{ route('post.index') }}">My Posts</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('post.trash') }}">Trash</a>
+            <a class="nav-link" href="{{ route('trash.index') }}">Trash</a>
           </li>
           <li>
             <form method="post" action="{{ route('users.logout') }}">

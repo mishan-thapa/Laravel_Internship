@@ -17,10 +17,10 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.show') }}">UnapprovedPosts</a>
+            <a class="nav-link" href="{{ route('admin.unapproved.index') }}">UnapprovedPosts</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.userList') }}">UserList</a>
+            <a class="nav-link" href="{{ route('admin.user.index') }}">UserList</a>
           </li>
           <li>
             <form method="post" action="{{ route('admin.logout') }}">
@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-2">
                                 <h4>status: {{$post->status}}</h4>
-                                <form method="post" action="{{ route('admin.blog.delete', ['id' => $post->id]) }}">
+                                <form method="post" action="{{ route('admin.post.delete', ['id' => $post->id]) }}">
                                     @csrf
                                     @method('delete')
                                     <input type="submit" value="Delete" />
@@ -63,6 +63,7 @@
               </div>
               <br>
           @endforeach
+        {{$posts->links()}}
       @else
           <p>No Posts found</p>
       @endif

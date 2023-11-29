@@ -13,10 +13,10 @@
             <div class="col-md-4 offset-md-4">
                 <div class="card form-holder">
                     <div class="card-body">
-                        <h1>Register</h1>
+                        <h1>User Registration</h1>
 
-                        @if (Session::has('error'))
-                            <p class="text-danger">{{ Session::get('error') }}</p>
+                        @if(session('success'))
+                            {{session('success')}}
                         @endif
 
                         <form action="{{route('users.store')}}" method="post">

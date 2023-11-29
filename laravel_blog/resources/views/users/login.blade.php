@@ -12,15 +12,11 @@
                 <div class="col-md-4 offset-md-4">
                     <div class="card form-holder">
                         <div class="card-body">
-                            <h1>Login</h1>
-    
+                            <h1>User Login</h1>
+
                             @if (Session::has('error'))
                                 <p class="text-danger">{{ Session::get('error') }}</p>
                             @endif
-                            @if (Session::has('success'))
-                                <p class="text-success">{{ Session::get('success') }}</p>
-                            @endif
-    
                             <form action="{{route('users.login')}}" method="post">
                                 @csrf
                                 @method('post')

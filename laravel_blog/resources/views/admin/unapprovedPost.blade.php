@@ -9,6 +9,30 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 
+<!-- Navbar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{route('admin.index')}}">Admin Home</a>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.unapproved.index') }}">unapprovedPosts</a>
+          </li>
+          <li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.user.index') }}">UserList</a>
+              </li>
+            <form method="post" action="{{ route('admin.logout') }}">
+                @csrf
+                <input type="submit" value="logout" />
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<!-- Body -->
 
 <div class="container">
     <div class="titlebar">
@@ -28,10 +52,15 @@
                               <p>{{$post->description}}</p>
                           </div>
                           <div class="col-2">
-                              <form method="post" action="{{ route('approve-post.update',['id' => $post->id]) }}">
+                              <form method="post" action="{{ route('admin.unapproved.update',['id' => $post->id]) }}">
                                   @csrf
                                   <input type="submit" value="Approve Post" />
                               </form>
+                              <form method="post" action="{{ route('admin.unapproved.delete', ['id' => $post->id]) }}">
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="Delete" />
+                            </form>
                           </div>
                       </div>
                   </div>
