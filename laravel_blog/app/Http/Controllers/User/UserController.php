@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserStoreRequest;
-use App\Http\Controllers\PostController;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    private $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository){
+        $this->userRepository = $userRepository;
+    }
+
     public function index()
     {
         return view("users.login");
@@ -26,13 +30,12 @@ class UserController extends Controller
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
-        User::create($validated);
+        $this->userRepository->createUser($validated);
         return redirect()->back()->with('success','User Registration Success');
     }
 
     public function delete(string $id){
-        $user = User::where('id','=',$id);//->get();
-        $user->delete();
+        $this->userRepository->deleteUser($id);
         $this->logout();
         return redirect(route('blog.index'));
     }

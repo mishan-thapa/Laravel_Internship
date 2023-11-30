@@ -3,25 +3,27 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StorePostRequest;
+use App\Repositories\Interfaces\TrashRepositoryInterface;
 
 class TrashController extends Controller
 {
+    private $trashRepository;
+
+    public function __construct(TrashRepositoryInterface $trashRepository){
+        $this->trashRepository = $trashRepository;
+    }
+
     public function index(){
-        $user_id = Auth::user()->id;
-        $posts = Post::onlyTrashed()->where('user_id','=',$user_id)->get();
-        return view('trash.index',['posts'=>$posts]);
+        $posts =$this->trashRepository->allTrash();
+        return view('trash.index',compact('posts')); //['posts'=>$posts]
     }
 
     public function update(string $id){
-        $post = Post::where('id','=',$id)->restore();
+        $this->trashRepository->trashRestore($id);
         return redirect()->back();
     }
     public function delete(string $id){
-        $post = Post::where('id','=',$id)->forceDelete();
+        $this->trashRepository->permanentDelete($id);
         return redirect()->back();
     }
 }

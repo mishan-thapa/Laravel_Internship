@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
-use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StorePostRequest;
+//use App\Traits\ApiResponser;
+use App\Repositories\Interfaces\PostRepositoryInterface;
 
 class BlogController extends Controller
 {
-    use ApiResponser;
-    // Show all posts
+    //use ApiResponser;
+    private $postRepository;
+
+    public function __construct(postRepositoryInterface $postRepository){
+        $this->postRepository = $postRepository;
+    }
+
     public function index()
     {
-        $posts = Post::where('status', '=', 'approved')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(5);//->get();
+        $posts = $this->postRepository->allApprovedPost();
+        return view("blog.index", compact('posts')); //["posts" => $posts]
         //$response = $this->successResponse($posts);
         //return view('index',['responseData'=>$response]);
-        return view("blog.index", compact('posts')); //["posts" => $posts]
     }
 
 

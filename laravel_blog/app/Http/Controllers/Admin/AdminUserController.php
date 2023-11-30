@@ -9,17 +9,22 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LoginValidateRequest;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class AdminUserController extends Controller
 {
+    private $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository){
+        $this->userRepository = $userRepository;
+    }
     public function index(){
-        $users = User::all();
-        return view('admin.userList',['users'=>$users]);
+        $users = $this->userRepository->allUser();
+        return view('admin.userList',compact('users'));
     }
 
     public function delete(string $id){
-        $user = User::where('id','=',$id);
-        $user->delete();
+        $this->userRepository->deleteUser($id);
         return redirect()->back();
     }
 }

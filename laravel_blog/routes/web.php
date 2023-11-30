@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\ApprovedPostController;
+
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\PostController;
 use App\Http\Controllers\User\TrashController;
 use App\Http\Controllers\Admin\AdminController;

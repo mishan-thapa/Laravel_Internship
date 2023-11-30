@@ -3,27 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
-use App\Models\User;
-use App\Models\Admin;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\LoginValidateRequest;
+use App\Repositories\Interfaces\PostRepositoryInterface;
+use App\Repositories\Interfaces\TrashRepositoryInterface;
 
 class UnapprovedPostController extends Controller
 {
+    private $postRepository;
+    private $trashRepository;
+
+    public function __construct(postRepositoryInterface $postRepository, trashRepositoryInterface $trashRepository){
+        $this->postRepository = $postRepository;
+        $this->trashRepository = $trashRepository;
+    }
+
     public function index(){
-        $posts = Post::where("status",'=','unapproved')->get();
-        return view("admin.unapprovedPost", ["posts" => $posts]);
+        $posts = $this->postRepository->allUnapprovedPost();
+        return view("admin.unapprovedPost", compact('posts'));
     }
     public function update(string $id){
-        $post = Post::where('id','=',$id)
-                    ->update(['status'=>'approved']);
+        $this->postRepository->updateStatus($id);
         return redirect()->back();
     }
     public function delete(string $id){
-        $post = Post::where('id','=',$id);
-        $post->delete();
-        return redirect()-back();
+        $this->trashRepository->permanentDelete($id);
+        return redirect()->back();
     }
 }

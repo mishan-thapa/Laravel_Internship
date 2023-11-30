@@ -1,6 +1,9 @@
-<php?
+<?php
+
 namespace App\Repositories\Interfaces;
 
 Interface UserRepositoryInterface{
-    public function index();
+    public function allUser();
+    public function createUser($data);
+    public function deleteUser($id);
 }
