@@ -72,6 +72,17 @@ class PostRepository implements PostRepositoryInterface{
 
     public function updateStatus($id){
         $post = Post::where('id','=',$id)
-                    ->update(['status'=>'approved']);
+            ->update(['status'=>'approved']);
     }
+
+    public function search($search){
+        $posts = Post::where('title','LIKE', '%' . $search . '%')
+            ->orWhereHas('user', function ($query) use ($search) {
+                $query->where('name', 'LIKE', '%'. $search . '%');
+            })
+            ->orderBy('created_at','desc')
+            ->paginate(5);
+        return $posts;
+    }
+
 }

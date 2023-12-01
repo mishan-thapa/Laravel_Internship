@@ -12,6 +12,9 @@ Route::get('/', function () {
 });
 
 Route::get('/blog',[BlogController::class,'index'])->name('blog.index');
+Route::post('/blog/search',[BlogController::class,'search'])->name('blog.search');
+Route::get('/blog/filterSearch',[BlogController::class,'filterSearchView'])->name('blog.filterSearchView');
+Route::post('/blog/filterSearch',[BlogController::class,'filterSearch'])->name('blog.filterSearch');
 
 Route::get('/blog/post',[PostController::class,'index'])->name('post.index');
 Route::get('/blog/create',[PostController::class, 'create'])->name('post.create')->middleware(['auth']);
@@ -19,6 +22,7 @@ Route::post('/blog', [PostController::class, 'store'])->name('post.store');
 Route::get('/blog/post/edit/{id}',[PostController::class,'edit'])->name('post.edit')->middleware(['auth']);
 Route::post('/blog/post/update/{id}',[PostController::class,'update'])->name('post.update');
 Route::delete('/blog/post/delete/{id}',[PostController::class,'delete'])->name('post.delete')->middleware(['auth']);
+
 
 Route::get('/blog/trash',[TrashController::class,'index'])->name('trash.index')->middleware(['auth']);
 Route::post('/blog/trash/restore/{id}',[TrashController::class,'update'])->name('trash.update')->middleware(['auth']);

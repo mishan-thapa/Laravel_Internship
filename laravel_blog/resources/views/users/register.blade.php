@@ -15,10 +15,6 @@
                     <div class="card-body">
                         <h1>User Registration</h1>
 
-                        @if(session('success'))
-                            {{session('success')}}
-                        @endif
-
                         <form action="{{route('users.store')}}" method="post">
                             @csrf
                             @method('post')

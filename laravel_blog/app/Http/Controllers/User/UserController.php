@@ -31,7 +31,7 @@ class UserController extends Controller
         // Retrieve the validated input data...
         $validated = $request->validated();
         $this->userRepository->createUser($validated);
-        return redirect()->back()->with('success','User Registration Success');
+        return redirect()->route('users.login');
     }
 
     public function delete(string $id){
@@ -39,6 +39,10 @@ class UserController extends Controller
         $this->logout();
         return redirect(route('blog.index'));
     }
+
+    public function edit(string $id){}
+
+    public function update(Request $request, string $id){}
 
     public function login(UserLoginRequest $request)
     {

@@ -13,4 +13,5 @@ Interface PostRepositoryInterface{
     public function findPost($id);
     public function updatePost($validated,$post);
     public function updateStatus($id);
+    public function search($search);
 }
