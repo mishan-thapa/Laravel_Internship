@@ -29,8 +29,8 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         // Retrieve the validated input data...
-        $validated = $request->validated();
-        $this->userRepository->createUser($validated);
+        $validated_data = $request->validated();
+        $this->userRepository->createUser($validated_data);
         return redirect()->route('users.login');
     }
 
