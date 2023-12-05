@@ -7,6 +7,7 @@ use App\Http\Controllers\User\PostController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\TrashController;
 use App\Http\Controllers\User\ForgetPasswordController;
+use App\Http\Controllers\User\TwoFactorVerificationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,6 +38,11 @@ Route::post('/blog/user/logout',[UserController::class,'logout'])->name('users.l
 Route::delete('/blog/user/delete/{id}',[UserController::class,'delete'])->name('users.delete');
 
 Route::get('/blog/forget-passowrd',[ForgetPasswordController::class,'index'])->name('forgetPassword.index');
-Route::post('/blog/forget-password',[ForgetPasswordController::class,'create'])->name('forgetPassword.create');
+Route::post('/blog/forget-password',[ForgetPasswordController::class,'store'])->name('forgetPassword.create');
 Route::get('/blog/reset-password/{token}',[ForgetPasswordController::class,'edit'])->name('forgetPassword.edit');
 Route::post('/blog/reset-password',[ForgetPasswordController::class,'update'])->name('forgetPassword.update');
+
+Route::get('/blog/user/register/two-factor-verification',[TwoFactorVerificationController::class,'index'])->name('twoFactorAuthentication.index');
+Route::post('/blog/user/register/two-factor-verification',[TwoFactorVerificationController::class,'store'])->name('twoFactorAuthentication.store');
+Route::get('/blog/user/register/two-factor-verification/otp',[TwoFactorVerificationController::class,'edit'])->name('twoFactorAuthentication.edit');
+Route::post('/blog/user/register/two-factor-verification/otp/{email}',[TwoFactorVerificationController::class,'update'])->name('twoFactorAuthentication.update');

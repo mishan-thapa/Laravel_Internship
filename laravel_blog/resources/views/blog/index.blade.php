@@ -51,7 +51,7 @@
                         <a class="nav-link" href="{{route('users.index')}}">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('users.create')}}">Register</a>
+                        <a class="nav-link" href="{{route('twoFactorAuthentication.index')}}">Register</a>
                     </li>
                 @endauth
                 <li class="nav-item">
